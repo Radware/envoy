@@ -18,7 +18,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 120
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
@@ -37,7 +37,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 50
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
@@ -70,7 +70,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 50
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
@@ -103,7 +103,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 50
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
@@ -136,7 +136,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 50
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
@@ -169,7 +169,7 @@ jobs:
     runs-on: macos-12
     timeout-minutes: 50
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v3
     - run: cd mobile && ./ci/mac_ci_setup.sh
       name: 'Install dependencies'
     - env:
