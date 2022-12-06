@@ -312,6 +312,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
   ENVOY_LOG(debug, "{}: JWT token verification completed with: {}", name(),
             ::google::jwt_verify::getStatusString(status));
 
+  /*
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
     
@@ -323,7 +324,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
       set_extracted_jwt_data_cb_(jwks_data_->getJwtProvider().failed_status_in_metadata(), failed_status);
     }
   }
-  
+  */
   // If a request has multiple tokens, all of them must be valid. Otherwise it may have
   // following security hole: a request has a good token and a bad one, it will pass
   // verification, forwarded to the backend, and the backend may mistakenly use the bad
