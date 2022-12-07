@@ -314,7 +314,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
 
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
-    
+
     if ((jwks_data_ != nullptr) && !jwks_data_->getJwtProvider().failed_status_in_metadata().empty()) {
       ProtobufWkt::Struct failed_status;
       auto& failed_status_fields = *failed_status.mutable_fields();
@@ -323,7 +323,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
       set_extracted_jwt_data_cb_(jwks_data_->getJwtProvider().failed_status_in_metadata(), failed_status);
     }
   }
-  
+
   // If a request has multiple tokens, all of them must be valid. Otherwise it may have
   // following security hole: a request has a good token and a bad one, it will pass
   // verification, forwarded to the backend, and the backend may mistakenly use the bad
