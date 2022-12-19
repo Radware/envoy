@@ -334,10 +334,13 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
   if ((Status::Ok != status && !is_allow_failed_ && !is_allow_missing_) || tokens_.empty()) {
     tokens_.clear();
     if (is_allow_failed_) {
+      ENVOY_LOG(info, "inside doneWithStatus while is_allow_failed_ is:{}",is_allow_failed_);
       callback_(Status::Ok);
     } else if (is_allow_missing_ && status == Status::JwtMissed) {
+      ENVOY_LOG(info, "inside doneWithStatus while is_allow_missing_ is:{}",is_allow_missing_);
       callback_(Status::Ok);
     } else {
+      ENVOY_LOG(info, "inside doneWithStatus else");
       callback_(status);
     }
 
