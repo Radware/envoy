@@ -319,8 +319,8 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
         !jwks_data_->getJwtProvider().failed_status_in_metadata().empty()) {
       ProtobufWkt::Struct failed_status;
       auto& failed_status_fields = *failed_status.mutable_fields();
-      failed_status_fields["status"].set_string_value(std::to_string(status));
-      ENVOY_LOG(debug, "Writing to metada failure reason: {}",google::jwt_verify::getStatusString(enumToInt(status)));
+      failed_status_fields["status"].set_string_value(std::to_string(enumToInt(status)));
+      ENVOY_LOG(debug, "Writing to metada failure reason: {}",google::jwt_verify::getStatusString(status));
       set_extracted_jwt_data_cb_(jwks_data_->getJwtProvider().failed_status_in_metadata(), failed_status);
     }
   }
