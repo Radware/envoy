@@ -314,8 +314,8 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
 
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
-
-    if ((jwks_data_ != nullptr) &&
+    ENVOY_LOG(info, "### inside if and status in jwks_data is: {}",getStatusString(jwks_data_->getJwksObj()->getStatus()));
+    if (((jwks_data_ != nullptr) || (jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed)) &&
         !jwks_data_->getJwtProvider().failed_status_in_metadata().empty()) {
       ProtobufWkt::Struct failed_status;
       auto& failed_status_fields = *failed_status.mutable_fields();
