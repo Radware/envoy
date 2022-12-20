@@ -132,6 +132,7 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
   ENVOY_LOG(debug, "{}: JWT authentication starts (allow_failed={}), tokens size={}", name(),
             is_allow_failed_, tokens_.size());
   if (tokens_.empty()) {
+    jwks_data_ = jwks_cache_.findByProvider(*provider_);
     doneWithStatus(Status::JwtMissed);
     return;
   }
