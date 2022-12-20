@@ -144,7 +144,8 @@ void AuthenticatorImpl::startVerify() {
   ENVOY_LOG(debug, "{}: startVerify: tokens size {}", name(), tokens_.size());
   curr_token_ = std::move(tokens_.back());
   tokens_.pop_back();
-
+  
+  ENVOY_LOG(info,"provider.has_value()=",provider_.has_value());
   if (provider_.has_value()) {
     jwks_data_ = jwks_cache_.findByProvider(*provider_);
     jwt_ = jwks_data_->getJwtCache().lookup(curr_token_->token());
@@ -172,7 +173,8 @@ void AuthenticatorImpl::startVerify() {
   }
 
   // Issuer is configured
-  if (!provider_) {
+  ENVOY_LOG(info,"!provider.has_value()=",provider_);
+  if (!provider_.has_value()) {
     jwks_data_ = jwks_cache_.findByIssuer(jwt_->iss_);
   }
   // When `provider` is valid, findByProvider should never return nullptr.
