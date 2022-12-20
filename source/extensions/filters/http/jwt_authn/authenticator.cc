@@ -173,7 +173,7 @@ void AuthenticatorImpl::startVerify() {
   }
 
   // Issuer is configured
-  ENVOY_LOG(info,"!provider.has_value()=",provider_);
+  ENVOY_LOG(info,"!provider.has_value()=",provider_.has_value());
   if (!provider_.has_value()) {
     jwks_data_ = jwks_cache_.findByIssuer(jwt_->iss_);
   }
