@@ -316,7 +316,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
     //Forward the failed status to dynamic metadata
     ENVOY_LOG(info,
               "### inside if and status in jwks_data is: {}",
-              getStatusString(jwks_data_->getJwksObj()->getStatus()));
+              jwks_data_->getJwksObj()->keys().data()->get()->hmac_key_);
     //if ((jwks_data_ != nullptr) && ((jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed) ||
     //  !jwks_data_->getJwtProvider().failed_status_in_metadata().empty())) {
     if (jwks_data_ != nullptr) {
