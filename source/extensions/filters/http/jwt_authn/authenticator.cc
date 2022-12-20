@@ -314,15 +314,22 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
 
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
-    ENVOY_LOG(info, "### inside if and status in jwks_data is: {}",getStatusString(jwks_data_->getJwksObj()->getStatus()));
-    if ((jwks_data_ != nullptr) && ((jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed) ||
-        !jwks_data_->getJwtProvider().failed_status_in_metadata().empty())) {
+    ENVOY_LOG(info,
+              "### inside if and status in jwks_data is: {}",
+              getStatusString(jwks_data_->getJwksObj()->getStatus()));
+    //if ((jwks_data_ != nullptr) && ((jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed) ||
+    //  !jwks_data_->getJwtProvider().failed_status_in_metadata().empty())) {
+    if (jwks_data_ != nullptr) {
+      ENVOY_LOG(info, "jwks_data_ has value: {]", jwks_data_->getJwksObj()->keys().data()->get()->alg_);
+      if(!jwks_data_->getJwtProvider().failed_status_in_metadata().empty()) {
+        ENVOY_LOG(info,"!jwks_data_->getJwtProvider().failed_status_in_metadata().empty() == {}",!jwks_data_->getJwtProvider().failed_status_in_metadata().empty());
       ProtobufWkt::Struct failed_status;
       auto& failed_status_fields = *failed_status.mutable_fields();
       failed_status_fields["status"].set_string_value(std::to_string(enumToInt(status)));
-      ENVOY_LOG(debug, "Writing to metada failure reason: {}",google::jwt_verify::getStatusString(status));
+      ENVOY_LOG(debug, "Writing to metada failure reason: {}", google::jwt_verify::getStatusString(status));
       set_extracted_jwt_data_cb_(jwks_data_->getJwtProvider().failed_status_in_metadata(), failed_status);
     }
+  }
   }
 
   // If a request has multiple tokens, all of them must be valid. Otherwise it may have
