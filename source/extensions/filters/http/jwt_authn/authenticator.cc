@@ -314,13 +314,16 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
 
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
-    if((jwks_data_ != nullptr) && !jwks_data_->getJwksObj()->keys().empty()){
-    ENVOY_LOG(info,
-              "### inside if and status in jwks_data is: {}",
-              jwks_data_->getJwksObj()->keys().data()->get()->hmac_key_);}
+    ENVOY_LOG(info, "status is: {}",::google::jwt_verify::getStatusString(status));
+    ENVOY_LOG(info, "jwks_data_ is not nullptr? {}",jwks_data_!= nullptr);
+    //if((jwks_data_ != nullptr) && !jwks_data_->getJwksObj()->keys().empty()){
+    //ENVOY_LOG(info,
+    //          "### inside if and status in jwks_data is: {}",
+    //          jwks_data_->getJwksObj()->keys().data()->get()->hmac_key_);}
     //if ((jwks_data_ != nullptr) && ((jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed) ||
     //  !jwks_data_->getJwtProvider().failed_status_in_metadata().empty())) {
     if (jwks_data_ != nullptr) {
+      ENVOY_LOG(info, "getJwksObj is empty? {}",jwks_data_->getJwksObj()->keys().empty());
       ENVOY_LOG(info, "jwks_data_ has value: {]", jwks_data_->getJwksObj()->keys().data()->get()->alg_);
       if(!jwks_data_->getJwtProvider().failed_status_in_metadata().empty()) {
         ENVOY_LOG(info,"!jwks_data_->getJwtProvider().failed_status_in_metadata().empty() == {}",!jwks_data_->getJwtProvider().failed_status_in_metadata().empty());
