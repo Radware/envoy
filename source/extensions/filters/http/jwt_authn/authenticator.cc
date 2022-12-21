@@ -132,8 +132,9 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
   ENVOY_LOG(debug, "{}: JWT authentication starts (allow_failed={}), tokens size={}", name(),
             is_allow_failed_, tokens_.size());
   if (tokens_.empty()) {
+    ENVOY_LOG(info,"token is empty");
     if(provider_.has_value()) {
-       ENVOY_LOG(info, "tokens is empty and provider_ is: {} --> *provider_ is: [}", provider_.value(),*provider_);
+       ENVOY_LOG(info, "provider has_value() - provider_ is: {} --> *provider_ is: [}", provider_.value(),*provider_);
       //jwks_data_ = jwks_cache_.findByProvider(*provider_);
     }else {
       ENVOY_LOG(info,"provider_ has not value");
@@ -141,6 +142,7 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
     doneWithStatus(Status::JwtMissed);
     return;
   }
+  ENVOY_LOG(info,"token contain value: {}", tokens_.data()->get()->token());
 
   startVerify();
 }
