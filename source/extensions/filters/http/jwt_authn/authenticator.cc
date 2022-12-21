@@ -138,7 +138,7 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
       if(!jwks_cache_.stats().jwks_fetch_success_.name().empty()) {
         ENVOY_LOG(info,"jwks_cache_ is not nullptr");
         ENVOY_LOG(info,"jwks_cache_ jwks_fetch_success_.name() is: {}",jwks_cache_.stats().jwks_fetch_success_.name());
-        jwks_data_ = jwks_cache_.findByProvider(*provider_);
+       // jwks_data_ = jwks_cache_.findByProvider(*provider_);
       } else {
         ENVOY_LOG(info,"jwks_cache_ is EMPTY");
       }
