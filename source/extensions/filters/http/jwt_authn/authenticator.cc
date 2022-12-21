@@ -349,7 +349,7 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
       auto& failed_status_fields = *failed_status.mutable_fields();
       failed_status_fields["status"].set_string_value(std::to_string(enumToInt(status)));
       ENVOY_LOG(debug, "Writing to metada failure reason: {}", google::jwt_verify::getStatusString(status));
-      set_extracted_jwt_data_cb_(jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata(), failed_status);
+      set_extracted_jwt_data_cb_(jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().c_str(), failed_status);
     }
   //}
   }
