@@ -133,8 +133,8 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
             is_allow_failed_, tokens_.size());
   if (tokens_.empty()) {
     if(provider_.has_value()) {
-      ENVOY_LOG(info, "tokens is empty and provider_ is: {}", provider_.value());
-      jwks_data_ = jwks_cache_.findByProvider(*provider_);
+       ENVOY_LOG(info, "tokens is empty and provider_ is: {} --> *provider_ is: [}", provider_.value(),*provider_);
+      //jwks_data_ = jwks_cache_.findByProvider(*provider_);
     }else {
       ENVOY_LOG(info,"provider_ has not value");
     }
