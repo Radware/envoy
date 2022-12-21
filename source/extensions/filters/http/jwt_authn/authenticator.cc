@@ -132,23 +132,9 @@ void AuthenticatorImpl::verify(Http::HeaderMap& headers, Tracing::Span& parent_s
   ENVOY_LOG(debug, "{}: JWT authentication starts (allow_failed={}), tokens size={}", name(),
             is_allow_failed_, tokens_.size());
  if (tokens_.empty()) {
-    ENVOY_LOG(info,"token is empty");
-    if(provider_.has_value()) {
-       ENVOY_LOG(info, "provider has_value() - provider_ is: {} --> *provider_ is: {}", provider_.value(),*provider_);
-      if(!jwks_cache_.stats().jwks_fetch_success_.name().empty()) {
-        ENVOY_LOG(info,"jwks_cache_ is not nullptr");
-        ENVOY_LOG(info,"jwks_cache_ jwks_fetch_success_.name() is: {}",jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().c_str());
-       // jwks_data_ = jwks_cache_.findByProvider(*provider_);
-      } else {
-        ENVOY_LOG(info,"jwks_cache_ is EMPTY");
-      }
-    }else {
-      ENVOY_LOG(info,"provider_ has not value");
-    }
     doneWithStatus(Status::JwtMissed);
     return;
   }
-  ENVOY_LOG(info,"token contain value: {}", tokens_.data()->get()->token());
 
   startVerify();
 }
@@ -331,27 +317,15 @@ void AuthenticatorImpl::doneWithStatus(const Status& status) {
   if(Status::Ok != status) {
     //Forward the failed status to dynamic metadata
     ENVOY_LOG(info, "status is: {}",::google::jwt_verify::getStatusString(status));
-    //ENVOY_LOG(info, "jwks_data_ is not nullptr? {}",jwks_data_!= nullptr);
-    //if((jwks_data_ != nullptr) && !jwks_data_->getJwksObj()->keys().empty()){
-    //ENVOY_LOG(info,
-    //          "### inside if and status in jwks_data is: {}",
-    //          jwks_data_->getJwksObj()->keys().data()->get()->hmac_key_);}
-    //if ((jwks_data_ != nullptr) && ((jwks_data_->getJwksObj()->getStatus() == Status::JwtMissed) ||
-    //  !jwks_data_->getJwtProvider().failed_status_in_metadata().empty())) {
     
-    
-    //if (jwks_data_ != nullptr) {
-      //ENVOY_LOG(info, "getJwksObj is empty? {}",jwks_data_->getJwksObj()->keys().empty());
-      //ENVOY_LOG(info, "jwks_data_ has value: {]", jwks_data_->getJwksObj()->keys().data()->get()->alg_);
-      if(!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty()) {
-        ENVOY_LOG(info,"!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty() == {}",!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty());
+    if(!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty()) {
+      ENVOY_LOG(info,"!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty() == {}",!jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata().empty());
       ProtobufWkt::Struct failed_status;
       auto& failed_status_fields = *failed_status.mutable_fields();
       failed_status_fields["status"].set_string_value(std::to_string(enumToInt(status)));
       ENVOY_LOG(debug, "Writing to metada failure reason: {}", google::jwt_verify::getStatusString(status));
       set_extracted_jwt_data_cb_(jwks_cache_.findByProvider(*provider_)->getJwtProvider().failed_status_in_metadata(), failed_status);
     }
-  //}
   }
 
   // If a request has multiple tokens, all of them must be valid. Otherwise it may have
